@@ -6,8 +6,7 @@
 (def input
   (line-seq (io/reader (io/resource "day2-input.txt"))))
 
-
-(defn find-valid-passwords
+(defn password-is-valid
   [line]
   (let [char-key (get (second line) 0)
         timesToBeShown (str/split (first line) #"-")
@@ -19,7 +18,7 @@
 
 (def part1
   (count (filter true?
-                 (map find-valid-passwords
+                 (map password-is-valid
                       (map #(str/split % #" ") input)))))
 
 (defn -main
