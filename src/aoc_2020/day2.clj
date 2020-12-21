@@ -7,18 +7,20 @@
   (line-seq (io/reader (io/resource "day2-input.txt"))))
 
 
-(defn find-frequencies
+(defn find-valid-passwords
   [line]
   (let [char-key (get (second line) 0)
-        ruleTimes (str/split (first line) #"-")
-        minimum-display (Integer/parseInt (first ruleTimes))
-        maximum-display (Integer/parseInt (second ruleTimes))
+        timesToBeShown (str/split (first line) #"-")
+        minimum-display (Integer/parseInt (first timesToBeShown))
+        maximum-display (Integer/parseInt (second timesToBeShown))
         actually-display (get (frequencies (nth line 2)) char-key 0)]
     (and (>= actually-display minimum-display)
          (<= actually-display maximum-display))))
 
 (def part1
-  (count (filter true? (map find-frequencies (map #(str/split % #" ") input)))))
+  (count (filter true?
+                 (map find-valid-passwords
+                      (map #(str/split % #" ") input)))))
 
 (defn -main
   [& args]
