@@ -14,18 +14,7 @@
     :else (vector min-num max-num)
     ))
 
-;(defn find-position
-;  [seat min-num max-num]
-;  (loop [min min-num
-;         max max-num
-;         char-seats (str/split seat #"")]
-;    (if (= 1 (- max min))
-;      (if (or (= (first char-seats) "F") (= (first char-seats) "L")) min max)
-;      (let [[char & remaining] char-seats
-;            result (find-halfs char min max)]
-;        (recur (first result) (second result) remaining)))))
-
-(defn find-position-better
+(defn find-position
   [seat min-num max-num]
   (reduce (fn [[min max] char]
             (if (= 1 (- max min))
@@ -36,11 +25,11 @@
 
 (defn find-row
   [seat]
-  (find-position-better seat 0 127))
+  (find-position seat 0 127))
 
 (defn find-column
   [last-three-chars]
-  (find-position-better last-three-chars 0 7))
+  (find-position last-three-chars 0 7))
 
 (defn find-seat-id
   [seat]
