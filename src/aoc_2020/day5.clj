@@ -14,7 +14,18 @@
     :else (vector min-num max-num)
     ))
 
-(defn find-position
+;(defn find-position
+;  [seat min-num max-num]
+;  (loop [min min-num
+;         max max-num
+;         char-seats (str/split seat #"")]
+;    (if (= 1 (- max min))
+;      (if (or (= (first char-seats) "F") (= (first char-seats) "L")) min max)
+;      (let [[char & remaining] char-seats
+;            result (find-halfs char min max)]
+;        (recur (first result) (second result) remaining)))))
+
+(defn find-position-better
   [seat min-num max-num]
   (reduce (fn [[min max] char]
             (if (= 1 (- max min))
@@ -25,11 +36,11 @@
 
 (defn find-row
   [seat]
-  (find-position seat 0 127))
+  (find-position-better seat 0 127))
 
 (defn find-column
   [last-three-chars]
-  (find-position last-three-chars 0 7))
+  (find-position-better last-three-chars 0 7))
 
 (defn find-seat-id
   [seat]
@@ -37,6 +48,14 @@
         column-chars (str/replace seat row-chars "")]
     (+ (* 8 (find-row row-chars)) (find-column column-chars))))
 
+(defn find-my-seat-id
+  [seats-ids]
+  (some (fn [[l h]]
+          (when (not (= 1 (- h l)))
+          (inc l)))
+        (partition-all 2 1 (sort seats-ids))))
+
 (defn -main
   [& args]
-  (print "Part1: " (time (apply max (map find-seat-id input)))))
+  (print "Part1:" (time (apply max (map find-seat-id input)))
+         "Part2:" (time (find-my-seat-id (map find-seat-id input)))))
